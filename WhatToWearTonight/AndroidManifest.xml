@@ -36,6 +36,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:label="Create Event"
+            android:theme="@style/CustomFontStyle"
+            android:name=".CreateEvent" >
+            <intent-filter >
+                <action android:name=".CREATE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         
           <activity
             android:label="List Activity"

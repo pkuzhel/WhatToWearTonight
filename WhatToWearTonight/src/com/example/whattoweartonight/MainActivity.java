@@ -28,7 +28,7 @@ public class MainActivity extends Activity {
 	   private EditText  username=null;
 	   private EditText  password=null;
 	   private TextView attempts;
-	   private Button login, viewA;
+	   private Button login, viewA, createE;
 	   int counter = 3;
 	   @Override
 	   protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +37,14 @@ public class MainActivity extends Activity {
 
 	      login = (Button)findViewById(R.id.button2);
 	      viewA = (Button)findViewById(R.id.button3);
+          createE = (Button)findViewById(R.id.button1);
+
+           createE.setOnClickListener(new View.OnClickListener() {
+               public void onClick(View v) {
+
+                   setContentView(R.layout.create);
+               }
+           });
 	   }
 	   
 
