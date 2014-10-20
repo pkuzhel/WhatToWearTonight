@@ -19,7 +19,7 @@ public class MainActivity extends Activity {
    private EditText  username=null;
    private EditText  password=null;
    private TextView attempts;
-   private Button login;
+   private Button login, forgot;
    int counter = 3;
    @Override
    protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,14 @@ public class MainActivity extends Activity {
       attempts = (TextView)findViewById(R.id.textView5);
       attempts.setText(Integer.toString(counter));
       login = (Button)findViewById(R.id.button1);
+      forgot = (Button)findViewById(R.id.button2);
+   
+      forgot.setOnClickListener(new View.OnClickListener() {
+          public void onClick(View v) {
+        	  setContentView(R.layout.forgot_pass);
+          }
+      });
+ 
    }
 
    public void login(View view){
@@ -51,6 +59,8 @@ public class MainActivity extends Activity {
    }
 
 }
+
+  
    @Override
    public boolean onCreateOptionsMenu(Menu menu) {
       // Inflate the menu; this adds items to the action bar if it is present.
