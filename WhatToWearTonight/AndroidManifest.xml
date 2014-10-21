@@ -3,7 +3,7 @@
     package="com.example.whattoweartonight"
     android:versionCode="1"
     android:versionName="1.0" >
-
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-sdk
         android:minSdkVersion="8"
         android:targetSdkVersion="18" />
@@ -53,6 +53,17 @@
             android:name=".EventActivity" >
             <intent-filter >
                 <action android:name=".SAVE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:label="ListEvents"
+            android:theme="@style/CustomFontStyle"
+            android:name=".EventsListActivity" >
+            <intent-filter >
+                <action android:name=".LISTEVENTS" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

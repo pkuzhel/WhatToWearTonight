@@ -95,7 +95,7 @@ public void sendEvents(View v) {
      listView.setAdapter(adapter);
 */	 
 	
-	  Intent intent = new Intent(this, WhatListActivity.class);
+	  Intent intent = new Intent(this, EventsListActivity.class);
 	  startActivity(intent);
 }   
 
