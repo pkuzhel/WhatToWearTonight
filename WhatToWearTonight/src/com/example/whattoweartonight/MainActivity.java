@@ -44,7 +44,15 @@ public class MainActivity extends Activity {
                public void onClick(View v) {
 
                    setContentView(R.layout.newhome);
+                   Button homeView = (Button)findViewById(R.id.button);
+                   homeView.setOnClickListener(new View.OnClickListener() {
+                       public void onClick(View v) {
 
+
+                           Intent intent = new Intent(".HOME");
+                           startActivity(intent);
+                       }
+                   });
 
                }
            });
