@@ -46,7 +46,17 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
-        
+
+        <activity
+            android:label="Save Event"
+            android:theme="@style/CustomFontStyle"
+            android:name=".EventActivity" >
+            <intent-filter >
+                <action android:name=".SAVE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
           <activity
             android:label="List Activity"
             android:theme="@style/CustomFontStyle"

@@ -52,11 +52,20 @@ public class MainActivity extends Activity {
                            startActivityForResult(intent, 0);
                        }
                    });
+                   Button saveE = (Button)findViewById(R.id.button2);
+                   saveE.setOnClickListener(new View.OnClickListener() {
+                       public void onClick(View v) {
+
+
+                           Intent intent = new Intent(".SAVE");
+                           startActivity(intent);
+                       }
+                   });
 
                }
            });
 	   }
-	   
+
 
 public void sendEvents(View v) {
 	 //ListView listView = (ListView) findViewById(R.id.list);
