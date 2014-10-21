@@ -5,14 +5,15 @@
     android:versionName="1.0" >
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-sdk
-        android:minSdkVersion="8"
+        android:minSdkVersion="14"
         android:targetSdkVersion="18" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic"
+        android:icon="@drawable/ic_action_photo"
         android:label="@string/app_name"
-        android:theme="@style/CustomFontStyle"
+        android:theme="@style/AppTheme"
+
         
         >
         <activity

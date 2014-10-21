@@ -10,6 +10,7 @@ import android.app.Activity;
  import android.os.Bundle;
  import android.util.SparseArray;
  import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.LinearLayout;
@@ -43,7 +44,11 @@ public class EventsListActivity extends Activity {
  groups.append(j, group);
  }
  }
-
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return true;
+    }
 
  }
 
