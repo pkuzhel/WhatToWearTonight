@@ -57,7 +57,16 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
+        <activity
+            android:label="Home Event"
+            android:theme="@style/CustomFontStyle"
+            android:name=".HomeActivity" >
+            <intent-filter >
+                <action android:name=".HOME" />
 
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:label="ListEvents"
             android:theme="@style/CustomFontStyle"
