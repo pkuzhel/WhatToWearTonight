@@ -45,6 +45,7 @@ public class MainActivity extends Activity {
                public void onClick(View v) {
 
                    setContentView(R.layout.newhome);
+
                    Button homeView = (Button)findViewById(R.id.button);
                    homeView.setOnClickListener(new View.OnClickListener() {
                        public void onClick(View v) {
@@ -140,11 +141,7 @@ public void sendMessage(View v) {
         Intent intent = new Intent(this, HomeActivity.class);
         startActivity(intent);
     }
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
+
 	 
 	   }
 

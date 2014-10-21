@@ -69,6 +69,16 @@
             </intent-filter>
         </activity>
         <activity
+            android:label="Delete"
+            android:theme="@style/CustomFontStyle"
+            android:name=".DeleteActivity" >
+            <intent-filter >
+                <action android:name=".DELETE" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
             android:label="ListEvents"
             android:theme="@style/CustomFontStyle"
             android:name=".EventsListActivity" >

@@ -34,7 +34,15 @@ public class RegisterActivity extends Activity {
 
     public void registerPro(View v) {
         setContentView(R.layout.view_profile);
+        Button deletePro = (Button) findViewById(R.id.button3);
+        deletePro.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
 
+
+                Intent intent = new Intent(".DELETE");
+                startActivity(intent);
+            }
+        });
 
     }
     public boolean onCreateOptionsMenu(Menu menu) {

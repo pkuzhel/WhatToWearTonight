@@ -2,7 +2,16 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/view_profile">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="My Profile"
+        android:id="@+id/textView8"
+        android:layout_gravity="center_horizontal" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -60,14 +69,22 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:id="@+id/imageView"
-        android:src="@drawable/ic" />
+        android:src="@drawable/ic_launcher"
+        android:layout_gravity="center_horizontal" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="382dp"
         android:layout_height="wrap_content"
         android:text="Edit Profile"
-        android:id="@+id/button"
+        android:id="@+id/button" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Delete Profile"
+        android:id="@+id/button3"
         android:layout_gravity="center_horizontal" />
 
     <Button
@@ -75,7 +92,6 @@
         android:layout_width="383dp"
         android:layout_height="wrap_content"
         android:text="LogOut"
-        android:id="@+id/button2"
-        android:layout_gravity="center_horizontal" />
+        android:id="@+id/button2" />
 
 </LinearLayout>
