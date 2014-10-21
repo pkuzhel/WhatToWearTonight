@@ -43,6 +43,16 @@ public class MainActivity extends Activity {
                public void onClick(View v) {
 
                    setContentView(R.layout.create);
+                   Button takeP = (Button)findViewById(R.id.button);
+                   takeP.setOnClickListener(new View.OnClickListener() {
+                       public void onClick(View v) {
+
+
+                           Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+                           startActivityForResult(intent, 0);
+                       }
+                   });
+
                }
            });
 	   }
