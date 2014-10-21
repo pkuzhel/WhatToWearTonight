@@ -49,7 +49,7 @@ public class HomeActivity extends Activity {
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.home);
-        String[] values = new String[] { "Birthday Party", "Wedding", "Concert",
+        String[] values = new String[] { "Birthday Party   ", "Wedding", "Concert",
                 "Amazing Event", "Another Awesome Event", "Not-So-Awesome Event" };
         //ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
         //       android.R.layout.simple_list_item_1, values);
