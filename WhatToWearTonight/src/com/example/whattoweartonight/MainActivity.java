@@ -54,6 +54,16 @@ public class MainActivity extends Activity {
                        }
                    });
 
+                   Button register = (Button)findViewById(R.id.button3);
+                   register.setOnClickListener(new View.OnClickListener() {
+                       public void onClick(View v) {
+
+
+                           Intent intent = new Intent(".REGISTER");
+                           startActivity(intent);
+                       }
+                   });
+
                }
            });
            createE.setOnClickListener(new View.OnClickListener() {

@@ -10,9 +10,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/ic"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" 
+        android:theme="@style/CustomFontStyle"
         
         >
         <activity
@@ -58,7 +58,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:label="Home Event"
+            android:label="Home"
             android:theme="@style/CustomFontStyle"
             android:name=".HomeActivity" >
             <intent-filter >
@@ -73,6 +73,17 @@
             android:name=".EventsListActivity" >
             <intent-filter >
                 <action android:name=".LISTEVENTS" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:label="Register"
+            android:theme="@style/CustomFontStyle"
+            android:name=".RegisterActivity" >
+            <intent-filter >
+                <action android:name=".REGISTER" />
 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
