@@ -2,20 +2,11 @@ package com.example.whattoweartonight;
 
 
 import android.app.Activity;
-
-
- import java.util.ArrayList;
-
- import android.app.Activity;
- import android.os.Bundle;
- import android.util.SparseArray;
- import android.view.Menu;
+import android.os.Bundle;
+import android.util.SparseArray;
+import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-
-import static android.widget.LinearLayout.*;
 
 public class EventsListActivity extends Activity {
  // more efficient than HashMap for mapping integers to objects

@@ -1,49 +1,9 @@
 package com.example.whattoweartonight;
 
-import android.os.Bundle;
 import android.app.Activity;
-import android.view.Menu;
-import com.example.whattoweartonight.Lists;
-import android.app.Activity;
-import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import android.app.ListActivity;
-
-import android.widget.ArrayAdapter;
-
-import java.util.ArrayList;
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.util.SparseArray;
-import android.view.Menu;
-import android.view.View;
-import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
-
-import static android.widget.LinearLayout.*;
-
-import android.app.ListActivity;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.Toast;
-import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 

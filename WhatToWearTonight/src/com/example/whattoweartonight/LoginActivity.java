@@ -1,21 +1,9 @@
 package com.example.whattoweartonight;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
-import android.os.Bundle;
-import android.app.Activity;
-import android.view.Menu;
-
-import android.app.Activity;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -49,11 +37,13 @@ public class LoginActivity extends Activity{
 	   }
 
 	   public void login(View view){
-	      if(username.getText().toString().equals("admin") && 
+	      if(username.getText().toString().equals("ADMIN") &&
 	      password.getText().toString().equals("admin")){
 	      Toast.makeText(getApplicationContext(), "Redirecting...", 
-	      Toast.LENGTH_SHORT).show();
-	   }	
+	        Toast.LENGTH_SHORT).show();
+          startActivity( new Intent( this,
+            HomeActivity.class ) );
+          }
 	   else{
 	      Toast.makeText(getApplicationContext(), "Wrong Credentials",
 	      Toast.LENGTH_SHORT).show();

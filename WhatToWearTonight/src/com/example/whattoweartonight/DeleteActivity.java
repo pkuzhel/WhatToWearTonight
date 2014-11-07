@@ -6,14 +6,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
 /**
  * Created by Anna on 2014-10-21.
  */
 public class DeleteActivity extends Activity {
+
+    @Override
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.view_profile);
