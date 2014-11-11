@@ -2,12 +2,22 @@ package com.example.whattoweartonight;
 
 import android.app.ListActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
 public class WhatListActivity extends ListActivity {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
   public void onCreate(Bundle icicle) {
     super.onCreate(icicle);
     String[] values = new String[] { "Paul's Birthday", "Billiards", "Someone's Wedding",

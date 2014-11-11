@@ -8,6 +8,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 public class EventActivity extends Activity {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu items for use in the action bar
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
     public void onCreate(Bundle icicle) {
         super.onCreate(icicle);
         setContentView(R.layout.event);
@@ -20,9 +28,11 @@ public class EventActivity extends Activity {
 
 
     }
+    /*
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
         return true;
     }
+    */
 }
