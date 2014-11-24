@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 public class MainActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
-    static boolean loggedIn = false;
+    static boolean loggedIn = true;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
@@ -28,16 +28,18 @@ public class MainActivity extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Fragment fragment, fragment1;
         super.onCreate(savedInstanceState);
 
-        if (!loggedIn) {
-            setContentView(R.layout.activity_main);
-        } else {
-            FragmentManager fragmentManager = getFragmentManager();
-            //fragmentManager.beginTransaction()
-            //        .replace(R.id.create, PlaceholderFragment.newInstance(0))
-            //        .commit();
-        }
+        setContentView(R.layout.activity_main);
+        FragmentManager fragmentManager = getFragmentManager();
+
+        fragment = new FragmentTest();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+
+
         mNavigationDrawerFragment = (NavigationDrawerFragment)
                 getFragmentManager().findFragmentById(R.id.navigation_drawer);
         mTitle = getTitle();
@@ -53,20 +55,43 @@ public class MainActivity extends Activity
         // update the main content by replacing fragments
         FragmentManager fragmentManager = getFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, PlaceholderFragment.newInstance(position + 1))
+                .replace(R.id.drawer_container, PlaceholderFragment.newInstance(position + 1))
                 .commit();
     }
 
     public void onSectionAttached(int number) {
+        Fragment fragment, fragment2;
+        FragmentManager fragmentManager;
+
         switch (number) {
             case 1:
                 mTitle = getString(R.string.title_section1);
+                fragment2 = new LoginActivity();
+
+                fragmentManager = getFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment2)
+                        .commit();
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
+                fragment = new FragmentTest3();
+
+                fragmentManager = getFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
                 break;
             case 3:
                 mTitle = getString(R.string.title_section3);
+                fragment = new FragmentTest();
+
+                fragmentManager = getFragmentManager();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
                 break;
         }
     }
@@ -77,7 +102,6 @@ public class MainActivity extends Activity
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setTitle(mTitle);
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
