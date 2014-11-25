@@ -9,7 +9,7 @@
         android:inputType="textPersonName"
         android:text="Name"
         android:ems="10"
-        android:id="@+id/editText2"
+        android:id="@+id/name"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
@@ -20,27 +20,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="time"
-        android:text="Time"
+        android:text="Description"
         android:ems="10"
-        android:id="@+id/editText"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentLeft="true"
+        android:id="@+id/eventDescription"
+        android:layout_below="@+id/name"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="46dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="date"
-        android:text="Date"
-        android:ems="10"
-        android:id="@+id/editText3"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
     <EditText
@@ -50,7 +34,7 @@
         android:text="Address"
         android:ems="10"
         android:id="@+id/editText4"
-        android:layout_below="@+id/editText"
+        android:layout_below="@+id/eventDescription"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentLeft="true"

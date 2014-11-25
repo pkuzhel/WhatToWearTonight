@@ -2,6 +2,7 @@ package annapaul.whattowearnav;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,23 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import android.app.Activity;
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 /**
  * Created by pavlick on 14-11-24.
@@ -17,6 +35,7 @@ public class HomeFragment extends Fragment {
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.home, null);
         String[] values = new String[]{"Birthday Party   ", "Wedding", "Concert",
                 "Amazing Event", "Another Awesome Event", "Not-So-Awesome Event"};
@@ -31,13 +50,13 @@ public class HomeFragment extends Fragment {
 
                 // TODO: review and revise, change to FragmentManager and create a
                 // 'CreateEvent' class with fragments
-                Fragment fragment = new CreateEventFragment();
+               Fragment fragment = new CreateEventFragment();
 
                 FragmentManager fragmentManager = getFragmentManager();
 
-                fragmentManager.beginTransaction()
+               fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, fragment)
-                        .commit();
+                       .commit();
 
                 /*
                 setContentView(R.layout.create);
