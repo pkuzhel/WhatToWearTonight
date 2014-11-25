@@ -17,7 +17,8 @@ public class MainActivity extends Activity {
 
         // TODO: check if the person is loggedIn from shared_pref
         if (!loggedIn)
-            setContentView(R.layout.newhome);
+            // TODO: add 'forgot password' on login screen!
+            setContentView(R.layout.login);
         else {
             Intent intent = new Intent(this, annapaul.whattowearnav.HomeActivity.class);
             startActivity(intent);
