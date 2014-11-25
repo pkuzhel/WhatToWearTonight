@@ -16,8 +16,6 @@ import android.view.ViewGroup;
 public class HomeActivity extends Activity
         implements NavigationDrawerFragment.NavigationDrawerCallbacks {
 
-
-    static boolean loggedIn = true;
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */

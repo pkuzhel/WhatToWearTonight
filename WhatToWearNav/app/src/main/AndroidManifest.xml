@@ -27,6 +27,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:label="@string/home"
+            android:name=".HomeActivity" >
+            <intent-filter >
+                <action android:name="annapaul.whattowearnav.HomeActivity" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
 
         <meta-data
             android:name="com.google.android.gms.version"

@@ -9,7 +9,11 @@ import android.os.Bundle;
  */
 public class MainActivity extends Activity {
 
-    static public boolean loggedIn = false;
+    /**
+     * Variable managing the session for being logged in to the app
+     */
+    static public boolean loggedIn = true;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
