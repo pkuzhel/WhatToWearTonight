@@ -1,6 +1,7 @@
 package annapaul.whattowearnav;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +31,14 @@ public class HomeFragment extends Fragment {
 
                 // TODO: review and revise, change to FragmentManager and create a
                 // 'CreateEvent' class with fragments
+                Fragment fragment = new CreateEventFragment();
+
+                FragmentManager fragmentManager = getFragmentManager();
+
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+
                 /*
                 setContentView(R.layout.create);
                 Button takeP = (Button) findViewById(R.id.button);
