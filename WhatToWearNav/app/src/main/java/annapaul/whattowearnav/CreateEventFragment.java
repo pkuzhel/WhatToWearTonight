@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -30,7 +31,7 @@ public class CreateEventFragment extends Fragment {
     private ProgressDialog pDialog;
 
     JSONParser jsonParser = new JSONParser();
-    EditText inputName;
+    TextView inputName;
     EditText inputPrice;
     EditText inputDesc;
 
@@ -45,7 +46,7 @@ public class CreateEventFragment extends Fragment {
         View view = inflater.inflate(R.layout.create_event, null);
 
         // Edit Text
-        inputName = (EditText) view.findViewById(R.id.name);
+        inputName = (TextView) view.findViewById(R.id.name);
         // inputPrice = (EditText) findViewById(R.id.inputPrice);
         inputDesc = (EditText) view.findViewById(R.id.eventDescription);
 

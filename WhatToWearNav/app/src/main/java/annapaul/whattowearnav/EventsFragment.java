@@ -1,31 +1,18 @@
 package annapaul.whattowearnav;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.ListFragment;
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 
-import org.apache.http.NameValuePair;
 import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
-public class EventsFragment extends ListFragment {
+public class EventsFragment extends Fragment {
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -58,20 +45,35 @@ public class EventsFragment extends ListFragment {
         productsList = new ArrayList<HashMap<String, String>>();
 
         // Loading products in Background Thread
-        new LoadAllProducts().execute();
+        //new LoadAllProducts().execute();
 
         // Get listview
+
+        /*
         ListView lv = getListView();
+
+
+        ListAdapter adapter = new SimpleAdapter(
+                EventsFragment.this.getActivity(), productsList,
+                R.layout.list_item, new String[] { TAG_PID,
+                TAG_NAME},
+                new int[] { R.id.pid, R.id.name });
+
+                */
+        // updating listview
+        //setListAdapter(adapter);
+
 
         // on seleting single product
         // launching Edit Product Screen
-        lv.setOnItemClickListener(new OnItemClickListener() {
 
+        //lv.setOnItemClickListener(new OnItemClickListener() {
+/*
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
-
+*/
                 /*
                 String pid = ((TextView) view.findViewById(R.id.pid)).getText()
                         .toString();
@@ -85,8 +87,10 @@ public class EventsFragment extends ListFragment {
                 // starting new activity and expecting some response back
                 startActivityForResult(in, 100);
                 */
+        /*
             }
         });
+        */
         return view;
     }
 
@@ -110,12 +114,8 @@ public class EventsFragment extends ListFragment {
 
     /**
      * Background Async Task to Load all product by making HTTP Request
-     * */
     class LoadAllProducts extends AsyncTask<String, String, String> {
 
-        /**
-         * Before starting background thread Show Progress Dialog
-         * */
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -125,10 +125,8 @@ public class EventsFragment extends ListFragment {
             pDialog.setCancelable(false);
             pDialog.show();
         }
-
-        /**
-         * getting All products from url
-         * */
+*/
+        /*
         protected String doInBackground(String... args) {
             FragmentManager fragmentManager;
             Fragment fragment;
@@ -181,11 +179,6 @@ public class EventsFragment extends ListFragment {
                         //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
 
 
-                        fragment = new EventsFragment();
-                        fragmentManager = getFragmentManager();
-                        fragmentManager.beginTransaction()
-                                .replace(R.id.fragment_container, fragment)
-                                .commit();
                     }
                 } else {
                     // no products found
@@ -197,16 +190,7 @@ public class EventsFragment extends ListFragment {
                             .replace(R.id.fragment_container, fragment)
                             .commit();
 
-                    /*
-                    Intent i = new Intent(getApplicationContext(),
-                            CreateEventActivity.class);
 
-                    */
-                    // Closing all previous activities
-                    /*
-                    i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(i);
-                    */
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -214,10 +198,11 @@ public class EventsFragment extends ListFragment {
 
             return null;
         }
+        */
 
         /**
          * After completing background task Dismiss the progress dialog
-         * **/
+
         protected void onPostExecute(String file_url) {
             FragmentManager fragmentManager;
             Fragment fragment;
@@ -238,14 +223,14 @@ public class EventsFragment extends ListFragment {
 
 
             //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-
-
+*/
+/*
             fragment = new EventsFragment();
             fragmentManager = getFragmentManager();
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();
-
+*/
 
             /*
             runOnUiThread(new Runnable() {
@@ -264,6 +249,3 @@ public class EventsFragment extends ListFragment {
             });
             */
         }
-
-    }
-}
