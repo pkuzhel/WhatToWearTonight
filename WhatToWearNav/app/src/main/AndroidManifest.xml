@@ -18,6 +18,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@android:style/Theme.Holo" >
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
@@ -29,6 +30,7 @@
         </activity>
         <activity
             android:label="@string/home"
+            android:launchMode="singleTop"
             android:name=".HomeActivity" >
             <intent-filter >
                 <action android:name="annapaul.whattowearnav.HomeActivity" />
@@ -36,15 +38,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".CreateEventActivity"
-            android:label="Add New Event" >
-            <intent-filter >
-                <action android:name="CREATE" />
-
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".ViewAllEventsActivity"
+            android:name=".EventsFragment"
             android:label="Add New Event" >
             <intent-filter >
                 <action android:name="VIEEWALL" />

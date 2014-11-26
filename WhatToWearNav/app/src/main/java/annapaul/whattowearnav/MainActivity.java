@@ -25,7 +25,9 @@ public class MainActivity extends Activity {
             setContentView(R.layout.login);
         else {
             Intent intent = new Intent(this, annapaul.whattowearnav.HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish();
         }
     }
 }

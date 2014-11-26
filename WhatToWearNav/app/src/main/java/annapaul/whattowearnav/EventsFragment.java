@@ -1,28 +1,31 @@
 package annapaul.whattowearnav;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+
+import android.app.Fragment;
+import android.app.FragmentManager;
+import android.app.ListFragment;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.apache.http.NameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.app.ListActivity;
-import android.app.ProgressDialog;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-public class ViewAllEventsActivity extends ListActivity {
+public class EventsFragment extends ListFragment {
 
     // Progress Dialog
     private ProgressDialog pDialog;
@@ -45,9 +48,11 @@ public class ViewAllEventsActivity extends ListActivity {
     JSONArray products = null;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.view_allevents);
+        //setContentView(R.layout.view_allevents);
+        View view = inflater.inflate(R.layout.event, null);
 
         // Hashmap for ListView
         productsList = new ArrayList<HashMap<String, String>>();
@@ -66,6 +71,8 @@ public class ViewAllEventsActivity extends ListActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // getting values from selected ListItem
+
+                /*
                 String pid = ((TextView) view.findViewById(R.id.pid)).getText()
                         .toString();
 
@@ -77,11 +84,13 @@ public class ViewAllEventsActivity extends ListActivity {
 
                 // starting new activity and expecting some response back
                 startActivityForResult(in, 100);
+                */
             }
         });
-
+        return view;
     }
 
+    /*
     // Response from Edit Product Activity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -97,6 +106,7 @@ public class ViewAllEventsActivity extends ListActivity {
         }
 
     }
+    */
 
     /**
      * Background Async Task to Load all product by making HTTP Request
@@ -109,7 +119,7 @@ public class ViewAllEventsActivity extends ListActivity {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            pDialog = new ProgressDialog(ViewAllEventsActivity.this);
+            pDialog = new ProgressDialog(EventsFragment.this.getActivity());
             pDialog.setMessage("Loading Events. Please wait...");
             pDialog.setIndeterminate(false);
             pDialog.setCancelable(false);
@@ -120,12 +130,15 @@ public class ViewAllEventsActivity extends ListActivity {
          * getting All products from url
          * */
         protected String doInBackground(String... args) {
+            FragmentManager fragmentManager;
+            Fragment fragment;
+            ListView list = null;
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
             // getting JSON string from URL
             JSONObject json = jParser.makeHttpRequest(url_all_products, "GET", params);
 
-            // Check your log cat for JSON reponse
+            // Check your log cat for JSON response
             Log.d("All Events: ", json.toString());
 
             try {
@@ -154,15 +167,46 @@ public class ViewAllEventsActivity extends ListActivity {
 
                         // adding HashList to ArrayList
                         productsList.add(map);
+
+
+                        ListAdapter adapter = new SimpleAdapter(
+                                EventsFragment.this.getActivity(), productsList,
+                                R.layout.list_item, new String[] { TAG_PID,
+                                TAG_NAME},
+                                new int[] { R.id.pid, R.id.name });
+
+                        list.setAdapter(adapter);
+
+
+                        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+
+                        fragment = new EventsFragment();
+                        fragmentManager = getFragmentManager();
+                        fragmentManager.beginTransaction()
+                                .replace(R.id.fragment_container, fragment)
+                                .commit();
                     }
                 } else {
                     // no products found
                     // Launch Add New product Activity
+                    // TODO: change this to the CreateEventFragment
+                    fragment = new CreateEventFragment();
+                    fragmentManager = getFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.fragment_container, fragment)
+                            .commit();
+
+                    /*
                     Intent i = new Intent(getApplicationContext(),
                             CreateEventActivity.class);
+
+                    */
                     // Closing all previous activities
+                    /*
                     i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                     startActivity(i);
+                    */
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -175,16 +219,42 @@ public class ViewAllEventsActivity extends ListActivity {
          * After completing background task Dismiss the progress dialog
          * **/
         protected void onPostExecute(String file_url) {
+            FragmentManager fragmentManager;
+            Fragment fragment;
+            ListView list = null;
+
             // dismiss the dialog after getting all products
             pDialog.dismiss();
+
             // updating UI from Background Thread
+
+            ListAdapter adapter = new SimpleAdapter(
+                    EventsFragment.this.getActivity(), productsList,
+                    R.layout.list_item, new String[] { TAG_PID,
+                    TAG_NAME},
+                    new int[] { R.id.pid, R.id.name });
+
+            list.setAdapter(adapter);
+
+
+            //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+
+
+            fragment = new EventsFragment();
+            fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+
+
+            /*
             runOnUiThread(new Runnable() {
                 public void run() {
-                    /**
-                     * Updating parsed JSON data into ListView
-                     * */
+
+                    // Updating parsed JSON data into ListView
+
                     ListAdapter adapter = new SimpleAdapter(
-                            ViewAllEventsActivity.this, productsList,
+                            ViewAllEventsActivity.this.getActivity(), productsList,
                             R.layout.list_item, new String[] { TAG_PID,
                             TAG_NAME},
                             new int[] { R.id.pid, R.id.name });
@@ -192,7 +262,7 @@ public class ViewAllEventsActivity extends ListActivity {
                     setListAdapter(adapter);
                 }
             });
-
+            */
         }
 
     }
