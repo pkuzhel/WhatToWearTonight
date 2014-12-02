@@ -155,6 +155,11 @@ public class CreateEventFragment extends Fragment {
                     .replace(R.id.fragment_container, fragment)
                     .commit();
 
+            //View view = fragment.getView();
+            //Activity activity = fragment.getActivity();
+
+            //ListView lv = (ListView) view.findViewById(R.id.list);
+            //lv.setAdapter(new ArrayAdapter<String>(fragment.getActivity(), android.R.layout.simple_list_item_1, new String[]{"anna", "anna"}));
         }
 
     }

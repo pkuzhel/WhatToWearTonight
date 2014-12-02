@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListAdapter;
+import android.widget.ListView;
+import android.widget.SimpleAdapter;
 
 import org.json.JSONArray;
 
@@ -39,10 +42,28 @@ public class EventsFragment extends Fragment {
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //setContentView(R.layout.view_allevents);
-        View view = inflater.inflate(R.layout.event, null);
+        View view = inflater.inflate(R.layout.view_allevents, null);
 
         // Hashmap for ListView
         productsList = new ArrayList<HashMap<String, String>>();
+
+        HashMap<String, String> map = new HashMap<String, String>();
+
+        map.put("event", "eventDesc");
+        map.put("event2", "event2Desc");
+        productsList.add(map);
+
+        ListView lv = (ListView) view.findViewById(R.id.listView);
+        //lv.setAdapter(new SimpleAdapter(this.getActivity(), android.R.layout.list_item, new String[]{"anna", "anna"}));
+
+        ListAdapter adapter = new SimpleAdapter(
+                EventsFragment.this.getActivity(), productsList,
+                R.layout.list_item, new String[] { "event",
+                "event2"},
+                new int[] { R.id.pid, R.id.name });
+
+        // updating listview
+        lv.setAdapter(adapter);
 
         // Loading products in Background Thread
         //new LoadAllProducts().execute();
