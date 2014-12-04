@@ -135,18 +135,18 @@ public class EventsFragment extends Fragment {
 
     /**
      * Background Async Task to Load all product by making HTTP Request
-    class LoadAllProducts extends AsyncTask<String, String, String> {
+     class LoadAllProducts extends AsyncTask<String, String, String> {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            pDialog = new ProgressDialog(EventsFragment.this.getActivity());
-            pDialog.setMessage("Loading Events. Please wait...");
-            pDialog.setIndeterminate(false);
-            pDialog.setCancelable(false);
-            pDialog.show();
-        }
-*/
+    @Override
+    protected void onPreExecute() {
+    super.onPreExecute();
+    pDialog = new ProgressDialog(EventsFragment.this.getActivity());
+    pDialog.setMessage("Loading Events. Please wait...");
+    pDialog.setIndeterminate(false);
+    pDialog.setCancelable(false);
+    pDialog.show();
+    }
+     */
         /*
         protected String doInBackground(String... args) {
             FragmentManager fragmentManager;
@@ -221,30 +221,30 @@ public class EventsFragment extends Fragment {
         }
         */
 
-        /**
-         * After completing background task Dismiss the progress dialog
+    /**
+     * After completing background task Dismiss the progress dialog
 
-        protected void onPostExecute(String file_url) {
-            FragmentManager fragmentManager;
-            Fragment fragment;
-            ListView list = null;
+     protected void onPostExecute(String file_url) {
+     FragmentManager fragmentManager;
+     Fragment fragment;
+     ListView list = null;
 
-            // dismiss the dialog after getting all products
-            pDialog.dismiss();
+     // dismiss the dialog after getting all products
+     pDialog.dismiss();
 
-            // updating UI from Background Thread
+     // updating UI from Background Thread
 
-            ListAdapter adapter = new SimpleAdapter(
-                    EventsFragment.this.getActivity(), productsList,
-                    R.layout.list_item, new String[] { TAG_PID,
-                    TAG_NAME},
-                    new int[] { R.id.pid, R.id.name });
+     ListAdapter adapter = new SimpleAdapter(
+     EventsFragment.this.getActivity(), productsList,
+     R.layout.list_item, new String[] { TAG_PID,
+     TAG_NAME},
+     new int[] { R.id.pid, R.id.name });
 
-            list.setAdapter(adapter);
+     list.setAdapter(adapter);
 
 
-            //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-*/
+     //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+     */
 /*
             fragment = new EventsFragment();
             fragmentManager = getFragmentManager();
@@ -269,4 +269,4 @@ public class EventsFragment extends Fragment {
                 }
             });
             */
-        }
+}
