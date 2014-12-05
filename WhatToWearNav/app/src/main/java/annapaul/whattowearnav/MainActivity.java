@@ -124,6 +124,7 @@ public class MainActivity extends Activity {
 
             // check for success tag
             try {
+
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
@@ -161,6 +162,8 @@ public class MainActivity extends Activity {
          * *
          */
         protected void onPostExecute(String file_url) {
+            pDialog.dismiss();
+
         }
 
     }
