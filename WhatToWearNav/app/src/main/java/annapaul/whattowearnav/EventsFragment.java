@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -43,9 +44,21 @@ public class EventsFragment extends Fragment {
     private static final String TAG_NAME = "name";
     private static final String TAG_DESC = "description";
     private static final String TAG_ADDRESS = "address";
+    private static final String TAG_IMAGE = "image";
+    private static final String TAG_TYPE = "type";
 
-    public static ArrayList<String> nameList = new ArrayList<String>();
+
+    private static final String TAG_MY_CLASS = "EventInfo";
+    private static String NAME = "fail";
+    private static String DESC = "fail";
+    private static String ADDRESS= "fail";
+    private static String IMAGE = "fail";
+    private static String TYPE= "fail";
+
+
+    public static ArrayList<EventInfo> infoList = new ArrayList<EventInfo>();
     public static ArrayList<String> descList = new ArrayList<String>();
+    public static ArrayList<String> nameList = new ArrayList<String>();
 
     // products JSONArray
     JSONArray events = null;
@@ -61,9 +74,9 @@ public class EventsFragment extends Fragment {
 
         if (args != null) {
             //Bundle args = getArguments();
-            ArrayList<String> nameArray = args.getStringArrayList("NameArray");
-            ArrayList<String> descArray = args.getStringArrayList("DescArray");
-
+            final ArrayList<String> nameArray = args.getStringArrayList("NameArray");
+            final ArrayList<String> descArray = args.getStringArrayList("DescArray");
+            final ArrayList<EventInfo> fullList = (ArrayList<EventInfo>) args.getSerializable("infoList");
 
             for (int i = 0; i < nameArray.size(); i++) {
                 // creating new HashMap
@@ -73,24 +86,33 @@ public class EventsFragment extends Fragment {
                 map.put(TAG_NAME, nameArray.get(i));
                 map.put(TAG_DESC, descArray.get(i));
 
-                //nameList.add(TAG_NAME);
-                //descList.add(TAG_DESC);
 
-                // adding HashList to ArrayList
                 eventsList.add(map);
             }
 
             ListView lv = (ListView) view.findViewById(R.id.listView);
 
-            //ListAdapter adapter = new ArrayAdapter<String>(this.getActivity(), newArray);
-            //lv.setAdapter(new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, newArray));
+            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
+                    Bundle args = new Bundle();
+                    args.putSerializable(TAG_MY_CLASS, fullList.get(position));
+                    Fragment toFragment = new EventFragment();
+                    toFragment.setArguments(args);
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, toFragment, "EventFragment")
+                            .addToBackStack("EventFragment").commit();
+                }
+            });
 
             ListAdapter adapter = new SimpleAdapter(
                     EventsFragment.this.getActivity(), eventsList,
                     R.layout.list_item, new String[]{TAG_NAME,
                     TAG_DESC},
                     new int[]{R.id.pid, R.id.name});
+
 
             // updating listview
             lv.setAdapter(adapter);
@@ -158,7 +180,8 @@ public class EventsFragment extends Fragment {
                         String name = c.getString(TAG_NAME);
                         String description = c.getString(TAG_DESC);
                         String address = c.getString(TAG_ADDRESS);
-
+                        String image = c.getString(TAG_IMAGE);
+                        String type = c.getString(TAG_TYPE);
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
 
@@ -168,31 +191,12 @@ public class EventsFragment extends Fragment {
 
                         nameList.add(name);
                         descList.add(description);
-
+                        //addressList.add(address);
                         // adding HashList to ArrayList
+                        infoList.add(new EventInfo(name, description, address, image, type));
                         eventsList.add(map);
                     }
 
-
-                    /*
-                    Fragment newFragment = new EventsListFragment();
-                    //FragmentManager fragmentManager
-                    getFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.fragment_container, newFragment);
-                            */
-                    /*
-                    //
-                    ListView lv = (ListView) getView().findViewById(R.id.listView);
-
-                    ListAdapter adapter = new SimpleAdapter(
-                            getActivity(), eventsList,
-                            R.id.listView, new String[] { TAG_PID,
-                            TAG_NAME},
-                            new int[] { R.id.pid, R.id.name });
-                    // updating listview
-                    lv.setAdapter(adapter);
-*/
                     eventsArray = eventsList;
                 } else {
                     // failed to create product
@@ -213,6 +217,8 @@ public class EventsFragment extends Fragment {
             //EventInfo ep = new EventInfo("name", "desc", "address", "img", "type");
             bundle.putStringArrayList("NameArray", nameList);
             bundle.putStringArrayList("DescArray", descList);
+            bundle.putSerializable("infoList", infoList);
+            //bundle.putStringArrayList("DescArray", descList);
             //bundle.putString("test", "yey");
 
 
@@ -224,7 +230,7 @@ public class EventsFragment extends Fragment {
 
             fragmentManager.beginTransaction()
                     .replace(R.id.fragment_container, fragment, "EventsFragment")
-                    .addToBackStack("EventsFragment").commit();
+                    .commit();
 
         }
 
