@@ -1,11 +1,14 @@
 package annapaul.whattowearnav;
 
 import android.app.Fragment;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -25,6 +28,10 @@ public class EventFragment extends Fragment {
         View view = inflater.inflate(R.layout.event, null);
         TextView textView = (TextView) view.findViewById(R.id.textView);
         textView.setText(myClass.name);
+
+        Bitmap bitmap= BitmapFactory.decodeFile(myClass.image);
+        ImageView im = (ImageView) view.findViewById(R.id.imageView);
+        im.setImageBitmap(bitmap);
 
         TextView tv = (TextView) view.findViewById(R.id.textView3);
         tv.setText(myClass.address);

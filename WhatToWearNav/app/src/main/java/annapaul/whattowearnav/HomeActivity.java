@@ -76,7 +76,7 @@ public class HomeActivity extends Activity
                 break;
             case 2:
                 mTitle = getString(R.string.title_section2);
-                fragment = new EventFragment();
+                fragment = new EventsFragment();
 
                 fragmentManager = getFragmentManager();
 

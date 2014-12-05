@@ -1,6 +1,5 @@
 package annapaul.whattowearnav;
 
-import android.app.AlertDialog;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
@@ -8,13 +7,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,7 +28,7 @@ import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,9 +41,15 @@ public class CreateEventFragment extends Fragment {
 
     private static final int SELECT_PICTURE = 1;
     private static final String TAG_MY_CLASS = "EventInfo";
-    private static String NAME = "success";
-    private static String DESC = "success";
-    private static String ADDRESS= "success";
+    private static String NAME = "fail";
+    private static String DESC = "fail";
+    private static String ADDRESS= "fail";
+    private static String IMAGE = "fail";
+    private static String TYPE= "fail";
+
+    private static String image_str= "0000000000";
+    private static String image_type="png";
+
     // Progress Dialog
     private ProgressDialog pDialog;
 
@@ -137,81 +143,40 @@ public class CreateEventFragment extends Fragment {
     public final void onActivityResult(final int requestCode, final int
             resultCode, final Intent i) {
         super.onActivityResult(requestCode, resultCode, i);
-
         // this matches the request code in the above call
         if (requestCode == 1) {
             Uri _uri = i.getData();
-            Bitmap photo = (Bitmap) i.getExtras().get("data");
-            File file1 = new File(Environment.getExternalStorageDirectory()+File.separator + "image.jpg");
+
+            // can post image
+            String [] proj = {MediaStore.Images.Media.DATA};
+            Cursor cursor = getActivity().getContentResolver().query(_uri,
+                    proj, // Which columns to return
+                    null,       // WHERE clause; which rows to return (all rows)
+                    null,       // WHERE clause selection arguments (none)
+                    null); // Order-by clause (ascending by name)
+            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+            cursor.moveToFirst();
+
+            String filepath = cursor.getString(column_index);
+
+            Bitmap bitmap= BitmapFactory.decodeFile(filepath);
+
+        /*
+         * Convert the image to a string
+         * */
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, stream); //compress to which format you want.
+            byte [] byte_arr = stream.toByteArray();
+            image_str = Base64.encodeToString(byte_arr, Base64.DEFAULT);
 
             // this will be null if no image was selected...
             if (_uri != null) {
-                // now we get the path to the image file
-                Cursor cursor = getActivity().getContentResolver().query(_uri, null,
-                        null, null, null);
-                cursor.moveToFirst();
-                int idx = cursor.getColumnIndex(MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME);
-                String result = cursor.getString(idx);
-                Log.v(result, "Print------------");
-                String imageFilePath = cursor.getString(0);
-                filename = file1.toString();
-                Log.v(filename, "Print");
-                Log.v(file1.toString(), "Print");
+                filename = filepath;
                 cursor.close();
-                //sourceUrl = filename;
-                if(isNetworkAvailable())
-                {
-
-                    new UploadTask().execute();
-                }else{
-                    AlertDialog.Builder b=new AlertDialog.Builder(CreateEventFragment.this.getActivity());
-                    b.setMessage("Internet connectivity failure.Try again!");
-                    b.show();
-                }
-
-
             }
         }
     }
 
-    class UploadTask extends AsyncTask<Void, Void, Void> {
-        ProgressDialog pDialog;
-        Boolean uploadStat;
-        @Override
-        protected void onPreExecute() {
-            pDialog = new ProgressDialog(CreateEventFragment.this.getActivity());
-            pDialog.setMessage("Uploading...");
-            pDialog.show();
-            super.onPreExecute();
-        }
-        @Override
-        protected Void doInBackground(Void... params) {
-            uploadStat=new FileUpload().ftpUpload1(sourceUrl, filename, desDirectory);
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if(uploadStat)
-                    {
-                        AlertDialog.Builder b=new AlertDialog.Builder(CreateEventFragment.this.getActivity());
-                        b.setMessage("Upload Successful");
-                        b.show();
-                    }else{
-                        AlertDialog.Builder b=new AlertDialog.Builder(CreateEventFragment.this.getActivity());
-                        b.setMessage("Upload Failed.");
-                        b.show();
-                    }
-                }
-            });
-            return null;
-        }
-        @Override
-        protected void onPostExecute(Void result) {
-            if (null != pDialog && pDialog.isShowing()) {
-                pDialog.dismiss();
-            }
-            super.onPostExecute(result);
-        }
-    }
     /**
      * Background Async Task to Create new product
      */
@@ -226,7 +191,7 @@ public class CreateEventFragment extends Fragment {
             pDialog = new ProgressDialog(CreateEventFragment.this.getActivity());
             pDialog.setMessage("Creating Event..");
             pDialog.setIndeterminate(false);
-            pDialog.setCancelable(true);
+            pDialog.setCancelable(false);
             pDialog.show();
         }
 
@@ -246,6 +211,11 @@ public class CreateEventFragment extends Fragment {
             // params.add(new BasicNameValuePair("price", price));
             params.add(new BasicNameValuePair("description", description));
             params.add(new BasicNameValuePair("address", add));
+
+            params.add(new BasicNameValuePair("image", image_str));
+            params.add(new BasicNameValuePair("type", image_type));
+
+
             // getting JSON Object
             // Note that create product url accepts POST method
             JSONObject json = jsonParser.makeHttpRequest(url_create_product,
@@ -260,21 +230,12 @@ public class CreateEventFragment extends Fragment {
 
                 if (success == 1) {
                     // successfully created product
+                    NAME = name;
+                    DESC = description;
+                    ADDRESS = add;
+                    IMAGE = filename;
+                    TYPE = image_type;
 
-
-                NAME = name;
-                DESC = description;
-                ADDRESS = add;
-
-
-
-
-                    /*
-                    Intent i = new Intent(CreateEventFragment.this.getActivity(), EventsFragment.class);
-                    startActivity(i);
-                    */
-                    // closing this screen
-                    //finish();
                 } else {
                     // failed to create product
                 }
@@ -294,7 +255,7 @@ public class CreateEventFragment extends Fragment {
             Fragment fragment;
             FragmentManager fragmentManager;
             pDialog.dismiss();
-            EventInfo ep = new EventInfo(NAME, DESC, ADDRESS);
+            EventInfo ep = new EventInfo(NAME, DESC, ADDRESS, IMAGE, TYPE);
 
             Bundle args = new Bundle();
             args.putSerializable(TAG_MY_CLASS, ep);
@@ -304,21 +265,6 @@ public class CreateEventFragment extends Fragment {
                     .beginTransaction()
                     .replace(R.id.fragment_container, toFragment, "EventFragment")
                     .addToBackStack("EventFragment").commit();
-
-          /*  fragment = new EventFragment();
-            fragmentManager = getFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-*/
-            //View view = fragment.getView();
-            //Activity activity = fragment.getActivity();
-
-            //ListView lv = (ListView) view.findViewById(R.id.list);
-            //lv.setAdapter(new ArrayAdapter<String>(fragment.getActivity(), android.R.layout.simple_list_item_1, new String[]{"anna", "anna"}));
         }
-
-
-
     }
 }

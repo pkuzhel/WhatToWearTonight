@@ -92,12 +92,6 @@
         android:layout_width="383dp"
         android:layout_height="wrap_content"
         android:text="LogOut"
-        android:id="@+id/button2" />
-
-    <Button
-        android:id="@+id/hide"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hide"/>
+        android:id="@+id/logout" />
 
 </LinearLayout>

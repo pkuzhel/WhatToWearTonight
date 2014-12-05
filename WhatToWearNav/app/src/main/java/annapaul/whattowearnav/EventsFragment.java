@@ -1,8 +1,11 @@
 package annapaul.whattowearnav;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,10 +13,14 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
+import org.apache.http.NameValuePair;
 import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class EventsFragment extends Fragment {
 
@@ -23,159 +30,134 @@ public class EventsFragment extends Fragment {
     // Creating JSON Parser object
     JSONParser jParser = new JSONParser();
 
-    ArrayList<HashMap<String, String>> productsList;
+    ArrayList<HashMap<String, String>> eventsList = new ArrayList<HashMap<String, String>>();
 
     // url to get all products list
-    private static String url_all_products = "http://scrapperia.com/android/get_all_products.php";
+    private static String url_get_events = "http://scrapperia.com/android/get_all_products.php";
+    private static ArrayList<HashMap<String,String>> eventsArray = new ArrayList<HashMap<String, String>>();
 
     // JSON Node names
     private static final String TAG_SUCCESS = "success";
-    private static final String TAG_PRODUCTS = "products";
+    private static final String TAG_EVENTS = "events";
     private static final String TAG_PID = "pid";
     private static final String TAG_NAME = "name";
+    private static final String TAG_DESC = "description";
+    private static final String TAG_ADDRESS = "address";
+
+    public static ArrayList<String> nameList = new ArrayList<String>();
+    public static ArrayList<String> descList = new ArrayList<String>();
 
     // products JSONArray
-    JSONArray products = null;
+    JSONArray events = null;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.view_allevents);
+
         View view = inflater.inflate(R.layout.view_allevents, null);
 
-        // Hashmap for ListView
-        productsList = new ArrayList<HashMap<String, String>>();
+        Bundle args = getArguments();
 
-        HashMap<String, String> map = new HashMap<String, String>();
-
-        map.put("event", "eventDesc");
-        map.put("event2", "event2Desc");
-        productsList.add(map);
-
-        ListView lv = (ListView) view.findViewById(R.id.listView);
-        //lv.setAdapter(new SimpleAdapter(this.getActivity(), android.R.layout.list_item, new String[]{"anna", "anna"}));
-
-        ListAdapter adapter = new SimpleAdapter(
-                EventsFragment.this.getActivity(), productsList,
-                R.layout.list_item, new String[] { "event",
-                "event2"},
-                new int[] { R.id.pid, R.id.name });
-
-        // updating listview
-        lv.setAdapter(adapter);
-
-        // Loading products in Background Thread
-        //new LoadAllProducts().execute();
-
-        // Get listview
-
-        /*
-        ListView lv = getListView();
+        if (args != null) {
+            //Bundle args = getArguments();
+            ArrayList<String> nameArray = args.getStringArrayList("NameArray");
+            ArrayList<String> descArray = args.getStringArrayList("DescArray");
 
 
-        ListAdapter adapter = new SimpleAdapter(
-                EventsFragment.this.getActivity(), productsList,
-                R.layout.list_item, new String[] { TAG_PID,
-                TAG_NAME},
-                new int[] { R.id.pid, R.id.name });
+            for (int i = 0; i < nameArray.size(); i++) {
+                // creating new HashMap
+                HashMap<String, String> map = new HashMap<String, String>();
 
-                */
-        // updating listview
-        //setListAdapter(adapter);
+                // adding each child node to HashMap key => value
+                map.put(TAG_NAME, nameArray.get(i));
+                map.put(TAG_DESC, descArray.get(i));
 
+                //nameList.add(TAG_NAME);
+                //descList.add(TAG_DESC);
 
-        // on seleting single product
-        // launching Edit Product Screen
-
-        //lv.setOnItemClickListener(new OnItemClickListener() {
-/*
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-                // getting values from selected ListItem
-*/
-                /*
-                String pid = ((TextView) view.findViewById(R.id.pid)).getText()
-                        .toString();
-
-                // Starting new intent
-                Intent in = new Intent(getApplicationContext(),
-                        HomeActivity.class);
-                // sending pid to next activity
-                in.putExtra(TAG_PID, pid);
-
-                // starting new activity and expecting some response back
-                startActivityForResult(in, 100);
-                */
-        /*
+                // adding HashList to ArrayList
+                eventsList.add(map);
             }
-        });
-        */
+
+            ListView lv = (ListView) view.findViewById(R.id.listView);
+
+            //ListAdapter adapter = new ArrayAdapter<String>(this.getActivity(), newArray);
+            //lv.setAdapter(new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_list_item_1, newArray));
+
+
+            ListAdapter adapter = new SimpleAdapter(
+                    EventsFragment.this.getActivity(), eventsList,
+                    R.layout.list_item, new String[]{TAG_NAME,
+                    TAG_DESC},
+                    new int[]{R.id.pid, R.id.name});
+
+            // updating listview
+            lv.setAdapter(adapter);
+        } else {
+            new GetEvents().execute();
+        }
         return view;
     }
 
-    /*
-    // Response from Edit Product Activity
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        // if result code 100
-        if (resultCode == 100) {
-            // if result code 100 is received
-            // means user edited/deleted product
-            // reload this screen again
-            Intent intent = getIntent();
-            finish();
-            startActivity(intent);
+    class GetEvents extends AsyncTask<String, String, String> {
+
+        private ProgressDialog pDialog;
+        JSONParser jsonParser = new JSONParser();
+        private String url_login = "http://scrapperia.com/android/get_all_products.php";
+        private static final String TAG_SUCCESS = "success";
+        public static final String PREFS_NAME = "UserPrefs";
+
+
+        /**
+         * Before starting background thread Show Progress Dialog
+         */
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            pDialog = new ProgressDialog(getActivity());
+            pDialog.setMessage("Getting all events... Hold on!");
+            pDialog.setIndeterminate(false);
+            pDialog.setCancelable(false);
+            pDialog.show();
         }
 
-    }
-    */
-
-    /**
-     * Background Async Task to Load all product by making HTTP Request
-     class LoadAllProducts extends AsyncTask<String, String, String> {
-
-    @Override
-    protected void onPreExecute() {
-    super.onPreExecute();
-    pDialog = new ProgressDialog(EventsFragment.this.getActivity());
-    pDialog.setMessage("Loading Events. Please wait...");
-    pDialog.setIndeterminate(false);
-    pDialog.setCancelable(false);
-    pDialog.show();
-    }
-     */
-        /*
+        /**
+         * Creating product
+         */
         protected String doInBackground(String... args) {
-            FragmentManager fragmentManager;
-            Fragment fragment;
-            ListView list = null;
             // Building Parameters
             List<NameValuePair> params = new ArrayList<NameValuePair>();
-            // getting JSON string from URL
-            JSONObject json = jParser.makeHttpRequest(url_all_products, "GET", params);
+            // getting JSON Object
+            // Note that create product url accepts POST method
+            JSONObject json = jsonParser.makeHttpRequest(url_get_events,
+                    "POST", params);
 
-            // Check your log cat for JSON response
-            Log.d("All Events: ", json.toString());
+            // check log cat fro response
+            Log.d("Create Response", json.toString());
 
+            // check for success tag
             try {
-                // Checking for SUCCESS TAG
                 int success = json.getInt(TAG_SUCCESS);
 
                 if (success == 1) {
+                    pDialog.dismiss();
+
                     // products found
                     // Getting Array of Products
-                    products = json.getJSONArray(TAG_PRODUCTS);
+                    events = json.getJSONArray(TAG_EVENTS);
+                    eventsList = new ArrayList<HashMap<String, String>>();
+
 
                     // looping through All Products
-                    for (int i = 0; i < products.length(); i++) {
-                        JSONObject c = products.getJSONObject(i);
+                    for (int i = 0; i < events.length(); i++) {
+                        JSONObject c = events.getJSONObject(i);
 
                         // Storing each json item in variable
                         String id = c.getString(TAG_PID);
                         String name = c.getString(TAG_NAME);
+                        String description = c.getString(TAG_DESC);
+                        String address = c.getString(TAG_ADDRESS);
 
                         // creating new HashMap
                         HashMap<String, String> map = new HashMap<String, String>();
@@ -184,34 +166,36 @@ public class EventsFragment extends Fragment {
                         map.put(TAG_PID, id);
                         map.put(TAG_NAME, name);
 
+                        nameList.add(name);
+                        descList.add(description);
+
                         // adding HashList to ArrayList
-                        productsList.add(map);
-
-
-                        ListAdapter adapter = new SimpleAdapter(
-                                EventsFragment.this.getActivity(), productsList,
-                                R.layout.list_item, new String[] { TAG_PID,
-                                TAG_NAME},
-                                new int[] { R.id.pid, R.id.name });
-
-                        list.setAdapter(adapter);
-
-
-                        //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-
-
+                        eventsList.add(map);
                     }
+
+
+                    /*
+                    Fragment newFragment = new EventsListFragment();
+                    //FragmentManager fragmentManager
+                    getFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.fragment_container, newFragment);
+                            */
+                    /*
+                    //
+                    ListView lv = (ListView) getView().findViewById(R.id.listView);
+
+                    ListAdapter adapter = new SimpleAdapter(
+                            getActivity(), eventsList,
+                            R.id.listView, new String[] { TAG_PID,
+                            TAG_NAME},
+                            new int[] { R.id.pid, R.id.name });
+                    // updating listview
+                    lv.setAdapter(adapter);
+*/
+                    eventsArray = eventsList;
                 } else {
-                    // no products found
-                    // Launch Add New product Activity
-                    // TODO: change this to the CreateEventFragment
-                    fragment = new CreateEventFragment();
-                    fragmentManager = getFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.fragment_container, fragment)
-                            .commit();
-
-
+                    // failed to create product
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -219,54 +203,30 @@ public class EventsFragment extends Fragment {
 
             return null;
         }
-        */
 
-    /**
-     * After completing background task Dismiss the progress dialog
-
-     protected void onPostExecute(String file_url) {
-     FragmentManager fragmentManager;
-     Fragment fragment;
-     ListView list = null;
-
-     // dismiss the dialog after getting all products
-     pDialog.dismiss();
-
-     // updating UI from Background Thread
-
-     ListAdapter adapter = new SimpleAdapter(
-     EventsFragment.this.getActivity(), productsList,
-     R.layout.list_item, new String[] { TAG_PID,
-     TAG_NAME},
-     new int[] { R.id.pid, R.id.name });
-
-     list.setAdapter(adapter);
+        /**
+         * After completing background task Dismiss the progress dialog
+         * *
+         */
+        protected void onPostExecute(String file_url) {
+            Bundle bundle = new Bundle();
+            //EventInfo ep = new EventInfo("name", "desc", "address", "img", "type");
+            bundle.putStringArrayList("NameArray", nameList);
+            bundle.putStringArrayList("DescArray", descList);
+            //bundle.putString("test", "yey");
 
 
-     //mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
-     */
-/*
-            fragment = new EventsFragment();
-            fragmentManager = getFragmentManager();
+            //b.putSerializable("class",ep);
+            Fragment fragment = new EventsFragment();
+            fragment.setArguments(bundle);
+
+            FragmentManager fragmentManager = getFragmentManager();
+
             fragmentManager.beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-*/
+                    .replace(R.id.fragment_container, fragment, "EventsFragment")
+                    .addToBackStack("EventsFragment").commit();
 
-            /*
-            runOnUiThread(new Runnable() {
-                public void run() {
+        }
 
-                    // Updating parsed JSON data into ListView
-
-                    ListAdapter adapter = new SimpleAdapter(
-                            ViewAllEventsActivity.this.getActivity(), productsList,
-                            R.layout.list_item, new String[] { TAG_PID,
-                            TAG_NAME},
-                            new int[] { R.id.pid, R.id.name });
-                    // updating listview
-                    setListAdapter(adapter);
-                }
-            });
-            */
+    }
 }
