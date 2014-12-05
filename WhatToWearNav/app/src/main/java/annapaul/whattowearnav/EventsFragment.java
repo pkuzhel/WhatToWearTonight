@@ -169,7 +169,7 @@ public class EventsFragment extends Fragment {
                     // Getting Array of Products
                     events = json.getJSONArray(TAG_EVENTS);
                     eventsList = new ArrayList<HashMap<String, String>>();
-
+                    infoList = new ArrayList<EventInfo>();
 
                     // looping through All Products
                     for (int i = 0; i < events.length(); i++) {
